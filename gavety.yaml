@@ -11,3 +11,8 @@ env:
     generate: true
   - name: DOLI_INSTANCE_UNIQUE_ID
     generate: true
+# Dolibarr writes its links from the DOLI_URL_ROOT setting. Gavety fills in
+# {prefix} with this app's fixed address, so links work on the LAN and remotely.
+base_path:
+  - env: DOLI_URL_ROOT
+    value: "http://localhost{prefix}"
