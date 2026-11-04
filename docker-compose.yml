@@ -15,7 +15,7 @@ services:
       - dbdata:/var/lib/mysql
 
   web:
-    image: dolibarr/dolibarr:latest
+    build: .   # the official image plus gavety-prefix.conf (see Dockerfile)
     depends_on:
       - db
     ports:
