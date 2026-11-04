@@ -1,0 +1,13 @@
+name: Dolibarr ERP & CRM
+build:
+  type: compose
+compose:
+  entry: web
+  port: 80
+resources:
+  min_ram_mb: 1024
+env:
+  - name: DOLI_ADMIN_PASSWORD
+    generate: true
+  - name: DOLI_INSTANCE_UNIQUE_ID
+    generate: true

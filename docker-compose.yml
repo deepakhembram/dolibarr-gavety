@@ -1,0 +1,43 @@
+# Dolibarr ERP/CRM for Gavety.
+# Based on the official example at https://github.com/Dolibarr/dolibarr-docker
+# Changes for Gavety: named volumes instead of host folders, the admin
+# password and instance key come from Gavety (see gavety.yaml), and only the
+# web service publishes a port.
+services:
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-dolibarr-root-change-me}
+      MARIADB_DATABASE: dolidb
+      MARIADB_USER: dolidbuser
+      MARIADB_PASSWORD: ${DB_PASSWORD:-dolibarr-db-change-me}
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  web:
+    image: dolibarr/dolibarr:latest
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    environment:
+      DOLI_INSTALL_AUTO: "1"
+      DOLI_DB_HOST: db
+      DOLI_DB_NAME: dolidb
+      DOLI_DB_USER: dolidbuser
+      DOLI_DB_PASSWORD: ${DB_PASSWORD:-dolibarr-db-change-me}
+      DOLI_ADMIN_LOGIN: admin
+      DOLI_COMPANY_NAME: My Company
+      DOLI_COMPANY_COUNTRYCODE: IN
+      PHP_INI_DATE_TIMEZONE: Asia/Kolkata
+      PHP_INI_UPLOAD_MAX_FILESIZE: 64M
+      PHP_INI_POST_MAX_SIZE: 64M
+      # DOLI_ADMIN_PASSWORD and DOLI_INSTANCE_UNIQUE_ID are set by Gavety.
+    volumes:
+      - documents:/var/www/documents
+      - custom:/var/www/html/custom
+
+volumes:
+  dbdata:
+  documents:
+  custom:
