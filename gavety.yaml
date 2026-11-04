@@ -16,3 +16,7 @@ env:
 base_path:
   - env: DOLI_URL_ROOT
     value: "http://localhost{prefix}"
+# Dolibarr reads the path of the request itself for its login form, so it must
+# receive the full path, prefix included. The Apache setting in this repo
+# makes it answer under that prefix.
+keep_prefix: true
